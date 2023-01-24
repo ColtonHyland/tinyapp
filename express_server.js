@@ -1,30 +1,43 @@
-var express = require('express');
-var app = express();
+const express = require("express");
+const app = express();
+const PORT = 8080; // default port 8080
 
-// set the view engine to ejs
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
-// use res.render to load up an ejs view file
+const urlDatabase = {
+  "b2xVn2": "http://www.lighthouselabs.ca",
+  "9sm5xK": "http://www.google.com"
+};
 
-// index page
-app.get('/', function(req, res) {
-  var mascots = [
-    { name: 'Sammy', organization: "DigitalOcean", birth_year: 2012},
-    { name: 'Tux', organization: "Linux", birth_year: 1996},
-    { name: 'Moby Dock', organization: "Docker", birth_year: 2013}
-  ];
-  var tagline = "No programming concept is complete without a cute animal mascot.";
-
-  res.render('pages/index', {
-    mascots: mascots,
-    tagline: tagline
-  });
+app.get("/", (req, res) => {
+  res.send("Hello!");
 });
 
-// about page
-app.get('/about', function(req, res) {
-  res.render('pages/about');
+app.get("/hello", (req, res) => {
+  const templateVars = { greeting: "Hello World!" };
+  res.render("hello_world", templateVars);
 });
 
-app.listen(8080);
-console.log('Server is listening on port 8080');
+app.get("/set", (req, res) => {
+  const a = 1;
+  res.send(`a = ${a}`);
+ });
+ 
+ app.get("/fetch", (req, res) => {
+  res.send(`a = ${a}`);
+ });
+
+app.get("/urls.json", (req, res) => {
+  res.json(urlDatabase);
+});
+
+app.get("/urls", (req, res) => {
+  const templateVars = { urls: urlDatabase };
+  res.render("urls_index", templateVars);
+});
+
+app.listen(PORT, () => {
+  console.log(`Example app listening on port ${PORT}!`);
+});
+
+
