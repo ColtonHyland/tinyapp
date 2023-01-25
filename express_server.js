@@ -62,15 +62,23 @@ app.get("/u/:id", (req, res) => {
   res.redirect(longURL);
 });
 
+app.post("/urls/:id/delete", (req, res) => {
+
+  delete urlDatabase[req.params.id]
+  const templateVars = { urls: urlDatabase };
+  res.render("urls_index", templateVars);
+});
+
 app.post("/urls", (req, res) => {
   // Log the POST request body to the console
 
   if (!Object.values(urlDatabase).includes(req.body["longURL"])) {
     urlDatabase[generateRandomString()] = req.body["longURL"];
   }
-  
-  console.log(urlDatabase);
-  res.send(urlDatabase);
+  // console.log(urlDatabase);
+  // res.send(urlDatabase);
+  const templateVars = { urls: urlDatabase };
+  res.render("urls_index", templateVars);
 });
 
 app.listen(PORT, () => {
