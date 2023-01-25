@@ -65,8 +65,8 @@ app.get("/u/:id", (req, res) => {
 app.post("/urls/:id/delete", (req, res) => {
 
   delete urlDatabase[req.params.id]
-  const templateVars = { urls: urlDatabase };
-  res.render("urls_index", templateVars);
+
+  res.redirect("/urls");
 });
 
 app.post("/urls", (req, res) => {
@@ -75,10 +75,14 @@ app.post("/urls", (req, res) => {
   if (!Object.values(urlDatabase).includes(req.body["longURL"])) {
     urlDatabase[generateRandomString()] = req.body["longURL"];
   }
-  // console.log(urlDatabase);
-  // res.send(urlDatabase);
-  const templateVars = { urls: urlDatabase };
-  res.render("urls_index", templateVars);
+  res.redirect("/urls");
+});
+
+app.post("/urls/:id", (req, res) => {
+  // console.log(req.params)
+  // console.log(req.body)
+  urlDatabase[req.params.id] = req.body["longURL"];
+  res.redirect("/urls");
 });
 
 app.listen(PORT, () => {
