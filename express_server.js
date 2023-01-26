@@ -55,8 +55,8 @@ app.get("/urls", (req, res) => {
     urls: urlDatabase, 
     username: req.cookies["username"]
   };
-  console.log(templateVars)
-  console.log(req.cookies)
+  // console.log(templateVars)
+  // console.log(req.cookies)
   res.render("urls_index", templateVars);
 });
 
@@ -73,6 +73,14 @@ app.get("/u/:id", (req, res) => {
 app.post("/login", (req, res) => {
   const username = res.cookie('username', req.body.username);
   //res.cookie('username', res.body);
+  
+  res.redirect("/urls");
+});
+
+app.post("/logout", (req, res) => {
+  //const username = res.cookie('username', req.body.username);
+  //res.cookie('username', res.body);
+  res.clearCookie('username', req.body.username);
   
   res.redirect("/urls");
 });
