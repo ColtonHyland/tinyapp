@@ -33,7 +33,16 @@ function generateRandomString() {
      result += chars.charAt(Math.floor(Math.random() * charLength));
   }
   return result;
-}
+};
+
+function getUserByEmail(userEmail) {
+  for (const user in users) {
+    if (userEmail === users[user]["email"]) {
+      return users[user];
+    }
+  }
+  return null;
+};
 
 app.get("/", (req, res) => {
   res.send("Hello!");
@@ -44,14 +53,14 @@ app.get("/hello", (req, res) => {
   res.render("hello_world", templateVars);
 });
 
-app.get("/set", (req, res) => {
-  const a = 1;
-  res.send(`a = ${a}`);
- });
+// app.get("/set", (req, res) => {
+//   const a = 1;
+//   res.send(`a = ${a}`);
+//  });
  
- app.get("/fetch", (req, res) => {
-  res.send(`a = ${a}`);
- });
+//  app.get("/fetch", (req, res) => {
+//   res.send(`a = ${a}`);
+//  });
 
 app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
@@ -98,11 +107,23 @@ app.post("/register", (req, res) => {
   //const email = res.cookie('email', req.body.email);
   //const password = res.cookie('password', req.body.password);
   const newID = generateRandomString();
-  users[newID] = {
-    newID: newID,
-    email: req.body["email"],
-    password: req.body["password"]
+
+ 
+  if (getUserByEmail(req.body["email"]) !== null) {
+      
+    res.status(400).send("Email aready in use. Please try agian!");
+    return;
+  } else if (req.body["email"].length < 1 || req.body["password"].length < 1) {
+    res.status(400).send("Inavlid email/password. Please try agian!");
+    return;
+  } else { 
+      users[newID] = {
+      newID: newID,
+      email: req.body["email"],
+      password: req.body["password"]
+    }
   }
+  
   console.log(users)
   res.redirect("/urls");
 });
