@@ -17,19 +17,23 @@
         <a class="nav-item nav-link" href="/urls">My URLs</a>
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
           <% if(username === undefined){ %>
-            <form class="form-inline" method="POST" action="/login">
+            <form class="form-inline" method="GET" action="/login">
               <div class="form-group mb-2"></div>
-              <input
+              <!--<input
                 class="form-control"
                 type="text"
                 name="username"
                 placeholder="Username"
                 style="width: 300px"
-              />    
+              />-->    
           <button class="btn btn-outline-dark">Login</button>
         </div>
         </form>
-      
+        <form class="form-inline" method="GET" action="/register">
+          <div class="form-group mb-2"></div>
+          <button type="submit" class="btn btn-outline-dark">Register</button>
+        </div>
+          </form>
           <% } else{ %> 
             <form class="form-inline" method="POST" action="/logout">
               <div class="form-group mb-2"></div>
@@ -38,11 +42,7 @@
             </div>
               </form>
          <% } %>
-         <form class="form-inline" method="POST" action="/register-page">
-          <div class="form-group mb-2"></div>
-          <button type="submit" class="btn btn-outline-dark">Register</button>
-        </div>
-          </form>
+         
       </div>
     </div>
   </nav>
