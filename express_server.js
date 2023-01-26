@@ -12,6 +12,19 @@ const urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+const users = {
+  userRandomID: {
+    id: "userRandomID",
+    email: "user@example.com",
+    password: "purple-monkey-dinosaur",
+  },
+  user2RandomID: {
+    id: "user2RandomID",
+    email: "user2@example.com",
+    password: "dishwasher-funk",
+  },
+};
+
 function generateRandomString() {
   var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   var charLength = chars.length;
@@ -61,7 +74,7 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/urls/:id", (req, res) => {
-  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id], username: req.cookies["username"]};
+  const templateVars = { id: req.params.id, longURL: urlDatabase[req.params.id], username: req.cookies["username"] };
   res.render("urls_show", templateVars);
 });
 
@@ -70,22 +83,46 @@ app.get("/u/:id", (req, res) => {
   res.redirect(longURL);
 });
 
+app.get("/register", (req, res) => {
+  const templateVars = { username: req.cookies["username"] }
+  res.render("registration", templateVars);
+});
+
+app.post("/register-page", (req, res) => {
+  // const username = res.cookie('email', req.body.email);
+  // const password = res.cookie('password', req.body.password);
+  res.redirect("/register");
+});
+
+app.post("/register", (req, res) => {
+  //const email = res.cookie('email', req.body.email);
+  //const password = res.cookie('password', req.body.password);
+  const newID = generateRandomString();
+  users[newID] = {
+    newID: newID,
+    email: req.body["email"],
+    password: req.body["password"]
+  }
+  console.log(users)
+  res.redirect("/urls");
+});
+
+
 app.post("/login", (req, res) => {
   const username = res.cookie('username', req.body.username);
-  //res.cookie('username', res.body);
   
   res.redirect("/urls");
 });
 
 app.post("/logout", (req, res) => {
-  //const username = res.cookie('username', req.body.username);
-  //res.cookie('username', res.body);
+
   res.clearCookie('username', req.body.username);
   
   res.redirect("/urls");
 });
 
 app.post("/urls/:id/delete", (req, res) => {
+  
 
   delete urlDatabase[req.params.id]
 
