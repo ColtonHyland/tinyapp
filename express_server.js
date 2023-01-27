@@ -126,12 +126,12 @@ app.get("/urls/:id", (req, res) => {
 
 app.post("/urls/:id", (req, res) => {
 
-  const user_id = req.cookies.user_id;
-  if(templateVars["user_id"] === undefined) {
+  const userID = req.cookies.user_id;
+  if(userID === undefined) {
     res.status(400).send('Please first make an account!');
     return;
   }
-  if(user_id === urlDatabase[req.params.id].userID) {
+  if(userID === urlDatabase[req.params.id].userID) {
     urlDatabase[req.params.id].longURL = req.body.longURL
     return res.redirect("/urls");
   } else {
